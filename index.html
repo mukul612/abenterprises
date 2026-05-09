@@ -3,70 +3,711 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AB Enterprises | Next-Gen Industrial Systems</title>
+  <meta name="description" content="AB Induction — Advanced Induction Heating Machine Technology. Faridabad, India." />
+  <title>AB Induction — Advanced Induction Heating Machine Technology</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <div class="page-transition"></div>
-  <header class="site-header glass">
-    <a href="index.html" class="brand">AB <span>ENTERPRISES</span></a>
-    <nav>
-      <a href="index.html" class="active">Home</a>
-      <a href="products.html">Products</a>
-      <a href="about.html">About</a>
-      <a href="contact.html">Contact</a>
+
+  <!-- ========== Cursor glow & ambient FX ========== -->
+  <div class="cursor-glow" id="cursorGlow"></div>
+  <div class="grid-bg" aria-hidden="true"></div>
+  <div class="ambient-orbs" aria-hidden="true">
+    <span class="orb orb-1"></span>
+    <span class="orb orb-2"></span>
+    <span class="orb orb-3"></span>
+  </div>
+
+  <!-- ========== Navigation ========== -->
+  <header class="nav" id="nav">
+    <a href="#hero" class="brand">
+      <span class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 40 40" width="28" height="28">
+          <defs>
+            <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
+              <stop offset="0%" stop-color="#ff6a3d"/>
+              <stop offset="100%" stop-color="#ffb84d"/>
+            </linearGradient>
+          </defs>
+          <circle cx="20" cy="20" r="18" fill="none" stroke="url(#bg)" stroke-width="2"/>
+          <path d="M11 26 L20 9 L29 26 M14.5 20 H25.5" stroke="url(#bg)" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </span>
+      <span class="brand-text">AB <em>Induction</em></span>
+    </a>
+    <nav class="nav-links" id="navLinks">
+      <a href="#hero">Home</a>
+      <a href="#industries">Industries</a>
+      <a href="#products">Products</a>
+      <a href="#capabilities">Capabilities</a>
+      <a href="#simulation">Live Console</a>
+      <a href="#presence">Presence</a>
+      <a href="#contact">Contact</a>
     </nav>
+    <button class="hamburger" id="hamburger" aria-label="Toggle navigation" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
   </header>
 
-  <main>
-    <section class="hero parallax" style="--bg:url('https://abinduction.in/wp-content/uploads/2024/09/abinduction-logo.png');">
-      <div class="hero-content reveal">
-        <p class="eyebrow">Inspired by Precision • Built in India</p>
-        <h1>Industrial design, <br/> reimagined with motion.</h1>
-        <p>High-performance induction heating, hardening, and electroplating systems from AB Induction and AB Electricals — now presented in a modern digital experience.</p>
-        <div class="hero-actions">
-          <a class="btn primary" href="products.html">Explore Products</a>
-          <a class="btn" href="about.html">Our Story</a>
+  <!-- ========== Hero ========== -->
+  <section id="hero" class="hero">
+    <div class="hero-bg" aria-hidden="true">
+      <div class="hero-machine">
+        <!-- Stylized SVG of an induction coil + workpiece, reacting to scroll -->
+        <svg viewBox="0 0 800 800" preserveAspectRatio="xMidYMid slice">
+          <defs>
+            <radialGradient id="heat" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="#ffe1a8" stop-opacity="1"/>
+              <stop offset="35%" stop-color="#ff7a18" stop-opacity=".85"/>
+              <stop offset="70%" stop-color="#ff2a00" stop-opacity=".25"/>
+              <stop offset="100%" stop-color="#220500" stop-opacity="0"/>
+            </radialGradient>
+            <linearGradient id="metal" x1="0" x2="0" y1="0" y2="1">
+              <stop offset="0%" stop-color="#3a3f55"/>
+              <stop offset="100%" stop-color="#0d101a"/>
+            </linearGradient>
+            <filter id="blur1"><feGaussianBlur stdDeviation="6"/></filter>
+          </defs>
+          <!-- heat halo -->
+          <circle cx="400" cy="400" r="260" fill="url(#heat)" class="heat-pulse"/>
+          <!-- coil rings -->
+          <g class="coil" stroke="#ffb84d" fill="none" stroke-linecap="round">
+            <ellipse cx="400" cy="320" rx="180" ry="38" stroke-width="6"/>
+            <ellipse cx="400" cy="370" rx="180" ry="38" stroke-width="6" opacity=".9"/>
+            <ellipse cx="400" cy="420" rx="180" ry="38" stroke-width="6" opacity=".75"/>
+            <ellipse cx="400" cy="470" rx="180" ry="38" stroke-width="6" opacity=".6"/>
+          </g>
+          <!-- workpiece -->
+          <rect x="385" y="220" width="30" height="360" rx="6" fill="url(#metal)" class="workpiece"/>
+          <rect x="385" y="220" width="30" height="360" rx="6" fill="url(#heat)" filter="url(#blur1)" class="workpiece-glow"/>
+          <!-- particles -->
+          <g class="sparks">
+            <circle cx="380" cy="260" r="2" fill="#ffd791"/>
+            <circle cx="430" cy="350" r="1.5" fill="#ffb27a"/>
+            <circle cx="370" cy="430" r="2.5" fill="#ffe7b8"/>
+            <circle cx="440" cy="500" r="1.8" fill="#ffb27a"/>
+            <circle cx="395" cy="560" r="2" fill="#ffd791"/>
+          </g>
+        </svg>
+      </div>
+      <div class="hero-overlay"></div>
+    </div>
+
+    <div class="hero-content">
+      <p class="eyebrow"><span class="dot"></span> ESTD. Faridabad, India</p>
+      <h1 class="hero-title">
+        <span>Advanced</span>
+        <span class="gradient-text">Induction Heating</span>
+        <span>Machine Technology.</span>
+      </h1>
+      <p class="hero-sub">
+        Engineered for precision. Built for performance. Tuned for scale.
+        AB Induction designs and manufactures industrial induction heating, hardening,
+        electroplating, and laser systems for manufacturers who refuse compromise.
+      </p>
+      <div class="hero-cta">
+        <a href="#products" class="btn btn-primary">
+          Explore Products
+          <svg viewBox="0 0 24 24" width="18" height="18"><path d="M5 12h14M13 5l7 7-7 7" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <a href="#contact" class="btn btn-ghost">Contact Us</a>
+      </div>
+
+      <div class="hero-meta">
+        <div><strong>Induction</strong><span>Heating · Hardening</span></div>
+        <div><strong>Laser</strong><span>Welding · Hardening</span></div>
+        <div><strong>Power</strong><span>Electroplating Rectifiers</span></div>
+      </div>
+    </div>
+
+    <a href="#industries" class="scroll-indicator" aria-label="Scroll to next section">
+      <span></span>
+    </a>
+  </section>
+
+  <!-- ========== Industries (horizontal marquee) ========== -->
+  <section id="industries" class="industries">
+    <div class="section-head">
+      <p class="kicker">/01 — Industries Served</p>
+      <h2>Powering manufacturing<br/><span class="gradient-text">across heavy industry.</span></h2>
+    </div>
+
+    <div class="marquee" aria-hidden="true">
+      <div class="marquee-track">
+        <span>Automotive</span><span>·</span>
+        <span>Forging</span><span>·</span>
+        <span>Heat Treatment</span><span>·</span>
+        <span>Electroplating</span><span>·</span>
+        <span>Tooling &amp; Dies</span><span>·</span>
+        <span>Heavy Engineering</span><span>·</span>
+        <span>Fabrication</span><span>·</span>
+        <span>Surface Hardening</span><span>·</span>
+        <!-- duplicate for seamless loop -->
+        <span>Automotive</span><span>·</span>
+        <span>Forging</span><span>·</span>
+        <span>Heat Treatment</span><span>·</span>
+        <span>Electroplating</span><span>·</span>
+        <span>Tooling &amp; Dies</span><span>·</span>
+        <span>Heavy Engineering</span><span>·</span>
+        <span>Fabrication</span><span>·</span>
+        <span>Surface Hardening</span><span>·</span>
+      </div>
+    </div>
+
+    <div class="industries-grid">
+      <article class="ind-card reveal" data-tilt>
+        <div class="ind-icon">
+          <svg viewBox="0 0 48 48" width="42" height="42" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 30 L10 22 L18 18 H30 L38 22 L42 30 V36 H6 Z"/><circle cx="14" cy="36" r="4"/><circle cx="34" cy="36" r="4"/><path d="M14 22 L18 18"/></svg>
+        </div>
+        <h3>Automotive</h3>
+        <p>Hardening of shafts, gears, axles &amp; powertrain components.</p>
+      </article>
+      <article class="ind-card reveal" data-tilt>
+        <div class="ind-icon">
+          <svg viewBox="0 0 48 48" width="42" height="42" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M8 38 L24 8 L40 38 Z"/><path d="M16 38 L24 22 L32 38"/></svg>
+        </div>
+        <h3>Forging</h3>
+        <p>Billet pre-heating with rapid, repeatable thermal profiles.</p>
+      </article>
+      <article class="ind-card reveal" data-tilt>
+        <div class="ind-icon">
+          <svg viewBox="0 0 48 48" width="42" height="42" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M10 36 H38 V14 H10 Z"/><path d="M16 14 V8 H32 V14"/><path d="M10 22 H38 M10 30 H38"/></svg>
+        </div>
+        <h3>Heat Treatment</h3>
+        <p>Surface and through-hardening for precision metallurgy.</p>
+      </article>
+      <article class="ind-card reveal" data-tilt>
+        <div class="ind-icon">
+          <svg viewBox="0 0 48 48" width="42" height="42" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M8 14 H40 V34 H8 Z"/><path d="M14 14 V34 M22 14 V34 M30 14 V34"/><path d="M8 14 L24 6 L40 14"/></svg>
+        </div>
+        <h3>Electroplating</h3>
+        <p>Stable, high-efficiency rectifier supply for plating lines.</p>
+      </article>
+      <article class="ind-card reveal" data-tilt>
+        <div class="ind-icon">
+          <svg viewBox="0 0 48 48" width="42" height="42" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="24" cy="24" r="14"/><circle cx="24" cy="24" r="6"/><path d="M24 4 V12 M24 36 V44 M4 24 H12 M36 24 H44"/></svg>
+        </div>
+        <h3>Tooling &amp; Dies</h3>
+        <p>Selective hardening of cutting edges and tool surfaces.</p>
+      </article>
+      <article class="ind-card reveal" data-tilt>
+        <div class="ind-icon">
+          <svg viewBox="0 0 48 48" width="42" height="42" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 38 H42"/><path d="M10 38 V20 H22 V38"/><path d="M26 38 V14 H38 V38"/><path d="M14 26 H18 M30 22 H34 M30 28 H34"/></svg>
+        </div>
+        <h3>Heavy Engineering</h3>
+        <p>Custom-engineered platforms for large-scale production.</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- ========== Products ========== -->
+  <section id="products" class="products">
+    <div class="section-head">
+      <p class="kicker">/02 — Product Universe</p>
+      <h2>One platform.<br/><span class="gradient-text">Every thermal challenge.</span></h2>
+      <p class="lead">Click any product for technical detail.</p>
+    </div>
+
+    <div class="product-grid">
+      <article class="product-card reveal" data-product="ihm" data-tilt>
+        <div class="product-visual" style="--accent:#ff7a18;">
+          <svg viewBox="0 0 200 200">
+            <ellipse cx="100" cy="80" rx="60" ry="14" fill="none" stroke="currentColor" stroke-width="3"/>
+            <ellipse cx="100" cy="100" rx="60" ry="14" fill="none" stroke="currentColor" stroke-width="3" opacity=".8"/>
+            <ellipse cx="100" cy="120" rx="60" ry="14" fill="none" stroke="currentColor" stroke-width="3" opacity=".6"/>
+            <rect x="94" y="50" width="12" height="120" rx="3" fill="currentColor" opacity=".25"/>
+            <circle cx="100" cy="110" r="55" fill="url(#g1)" opacity=".25"/>
+            <defs><radialGradient id="g1"><stop offset="0%" stop-color="#ffb84d"/><stop offset="100%" stop-color="transparent"/></radialGradient></defs>
+          </svg>
+        </div>
+        <div class="product-body">
+          <h3>Induction Heating Machine</h3>
+          <p>Solid-state heating systems with optimized coil topology.</p>
+          <span class="learn">View specs →</span>
+        </div>
+      </article>
+
+      <article class="product-card reveal" data-product="ihardening" data-tilt>
+        <div class="product-visual" style="--accent:#ff5a3d;">
+          <svg viewBox="0 0 200 200">
+            <rect x="40" y="30" width="120" height="140" rx="10" fill="none" stroke="currentColor" stroke-width="3"/>
+            <rect x="60" y="55" width="80" height="90" rx="4" fill="none" stroke="currentColor" stroke-width="2" opacity=".6"/>
+            <circle cx="100" cy="100" r="22" fill="none" stroke="currentColor" stroke-width="2"/>
+            <circle cx="100" cy="100" r="6" fill="currentColor"/>
+          </svg>
+        </div>
+        <div class="product-body">
+          <h3>Induction Hardening Machine</h3>
+          <p>Vertical &amp; horizontal scanners for precision case hardening.</p>
+          <span class="learn">View specs →</span>
+        </div>
+      </article>
+
+      <article class="product-card reveal" data-product="vscan" data-tilt>
+        <div class="product-visual" style="--accent:#ffb84d;">
+          <svg viewBox="0 0 200 200">
+            <rect x="80" y="20" width="40" height="160" rx="4" fill="none" stroke="currentColor" stroke-width="2.5"/>
+            <rect x="92" y="35" width="16" height="130" rx="2" fill="currentColor" opacity=".35"/>
+            <path d="M70 60 L130 60 M70 100 L130 100 M70 140 L130 140" stroke="currentColor" stroke-width="2"/>
+          </svg>
+        </div>
+        <div class="product-body">
+          <h3>Vertical Scanner</h3>
+          <p>Programmable vertical scan hardening with feedback control.</p>
+          <span class="learn">View specs →</span>
+        </div>
+      </article>
+
+      <article class="product-card reveal" data-product="hscan" data-tilt>
+        <div class="product-visual" style="--accent:#ff9a3d;">
+          <svg viewBox="0 0 200 200">
+            <rect x="20" y="80" width="160" height="40" rx="4" fill="none" stroke="currentColor" stroke-width="2.5"/>
+            <rect x="35" y="92" width="130" height="16" rx="2" fill="currentColor" opacity=".35"/>
+            <path d="M60 70 L60 130 M100 70 L100 130 M140 70 L140 130" stroke="currentColor" stroke-width="2"/>
+          </svg>
+        </div>
+        <div class="product-body">
+          <h3>Horizontal Scanner</h3>
+          <p>High-throughput horizontal hardening for shafts &amp; tubes.</p>
+          <span class="learn">View specs →</span>
+        </div>
+      </article>
+
+      <article class="product-card reveal" data-product="billet" data-tilt>
+        <div class="product-visual" style="--accent:#ff6a3d;">
+          <svg viewBox="0 0 200 200">
+            <rect x="20" y="80" width="160" height="40" rx="4" fill="none" stroke="currentColor" stroke-width="3"/>
+            <circle cx="60" cy="100" r="14" fill="none" stroke="currentColor" stroke-width="2"/>
+            <circle cx="100" cy="100" r="14" fill="none" stroke="currentColor" stroke-width="2"/>
+            <circle cx="140" cy="100" r="14" fill="none" stroke="currentColor" stroke-width="2"/>
+            <circle cx="60" cy="100" r="6" fill="currentColor"/>
+            <circle cx="100" cy="100" r="6" fill="currentColor"/>
+            <circle cx="140" cy="100" r="6" fill="currentColor"/>
+          </svg>
+        </div>
+        <div class="product-body">
+          <h3>Billet Heater</h3>
+          <p>Continuous billet pre-heating for forging applications.</p>
+          <span class="learn">View specs →</span>
+        </div>
+      </article>
+
+      <article class="product-card reveal" data-product="brazing" data-tilt>
+        <div class="product-visual" style="--accent:#ffa84d;">
+          <svg viewBox="0 0 200 200">
+            <path d="M50 140 L80 100 L100 120 L120 80 L150 140" fill="none" stroke="currentColor" stroke-width="3"/>
+            <circle cx="80" cy="100" r="6" fill="currentColor"/>
+            <circle cx="120" cy="80" r="6" fill="currentColor"/>
+            <path d="M40 150 L160 150" stroke="currentColor" stroke-width="2"/>
+          </svg>
+        </div>
+        <div class="product-body">
+          <h3>Induction Brazing System</h3>
+          <p>Localized, repeatable joining for assemblies and tubing.</p>
+          <span class="learn">View specs →</span>
+        </div>
+      </article>
+
+      <article class="product-card reveal" data-product="rectifier" data-tilt>
+        <div class="product-visual" style="--accent:#ffce73;">
+          <svg viewBox="0 0 200 200">
+            <rect x="40" y="60" width="120" height="80" rx="6" fill="none" stroke="currentColor" stroke-width="3"/>
+            <path d="M55 110 L75 90 L95 110 L115 90 L135 110 L145 100" stroke="currentColor" stroke-width="2.5" fill="none"/>
+            <circle cx="55" cy="80" r="3" fill="currentColor"/>
+            <circle cx="145" cy="80" r="3" fill="currentColor"/>
+          </svg>
+        </div>
+        <div class="product-body">
+          <h3>Electroplating Rectifier</h3>
+          <p>Stable DC supply for high-uptime plating lines.</p>
+          <span class="learn">View specs →</span>
+        </div>
+      </article>
+
+      <article class="product-card reveal" data-product="laser-weld" data-tilt>
+        <div class="product-visual" style="--accent:#ff4d6d;">
+          <svg viewBox="0 0 200 200">
+            <rect x="60" y="40" width="80" height="40" rx="6" fill="none" stroke="currentColor" stroke-width="3"/>
+            <path d="M100 80 L100 150" stroke="currentColor" stroke-width="3"/>
+            <path d="M90 150 L110 150 L100 170 Z" fill="currentColor"/>
+            <circle cx="100" cy="60" r="6" fill="currentColor"/>
+          </svg>
+        </div>
+        <div class="product-body">
+          <h3>Handheld Laser Welding</h3>
+          <p>Portable, high-precision laser welding for production.</p>
+          <span class="learn">View specs →</span>
+        </div>
+      </article>
+
+      <article class="product-card reveal" data-product="laser-hard" data-tilt>
+        <div class="product-visual" style="--accent:#ff7a8a;">
+          <svg viewBox="0 0 200 200">
+            <rect x="40" y="40" width="120" height="60" rx="6" fill="none" stroke="currentColor" stroke-width="3"/>
+            <path d="M100 100 L100 140 M85 140 L115 140" stroke="currentColor" stroke-width="3"/>
+            <rect x="50" y="150" width="100" height="20" rx="3" fill="none" stroke="currentColor" stroke-width="2"/>
+            <circle cx="100" cy="160" r="4" fill="currentColor"/>
+          </svg>
+        </div>
+        <div class="product-body">
+          <h3>Laser Hardening Machine</h3>
+          <p>Selective surface hardening with minimal distortion.</p>
+          <span class="learn">View specs →</span>
+        </div>
+      </article>
+
+      <article class="product-card reveal" data-product="igbt" data-tilt>
+        <div class="product-visual" style="--accent:#9ab8ff;">
+          <svg viewBox="0 0 200 200">
+            <rect x="55" y="55" width="90" height="90" rx="4" fill="none" stroke="currentColor" stroke-width="3"/>
+            <path d="M85 30 L85 55 M115 30 L115 55 M85 145 L85 170 M115 145 L115 170 M30 85 L55 85 M30 115 L55 115 M145 85 L170 85 M145 115 L170 115" stroke="currentColor" stroke-width="2"/>
+            <circle cx="100" cy="100" r="14" fill="none" stroke="currentColor" stroke-width="2"/>
+          </svg>
+        </div>
+        <div class="product-body">
+          <h3>IGBT Modules</h3>
+          <p>Insulated Gate Bipolar Transistor power stages.</p>
+          <span class="learn">View specs →</span>
+        </div>
+      </article>
+
+      <article class="product-card reveal" data-product="hex" data-tilt>
+        <div class="product-visual" style="--accent:#73d3ff;">
+          <svg viewBox="0 0 200 200">
+            <rect x="35" y="70" width="130" height="60" rx="6" fill="none" stroke="currentColor" stroke-width="3"/>
+            <path d="M50 85 H150 M50 100 H150 M50 115 H150" stroke="currentColor" stroke-width="2"/>
+            <path d="M35 100 L20 100 M165 100 L180 100" stroke="currentColor" stroke-width="2.5"/>
+          </svg>
+        </div>
+        <div class="product-body">
+          <h3>Heat Exchangers</h3>
+          <p>Closed-loop cooling integrated with induction systems.</p>
+          <span class="learn">View specs →</span>
+        </div>
+      </article>
+
+      <article class="product-card reveal" data-product="filter" data-tilt>
+        <div class="product-visual" style="--accent:#9affb6;">
+          <svg viewBox="0 0 200 200">
+            <path d="M70 40 H130 L100 110 V160 L100 160" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/>
+            <path d="M85 70 H115" stroke="currentColor" stroke-width="2"/>
+            <circle cx="100" cy="170" r="4" fill="currentColor"/>
+          </svg>
+        </div>
+        <div class="product-body">
+          <h3>Chemical Filters</h3>
+          <p>Process-grade filtration for plating &amp; industrial baths.</p>
+          <span class="learn">View specs →</span>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- ========== Capabilities ========== -->
+  <section id="capabilities" class="capabilities">
+    <div class="section-head">
+      <p class="kicker">/03 — Capabilities</p>
+      <h2>Engineered<br/><span class="gradient-text">end to end.</span></h2>
+    </div>
+
+    <div class="cap-grid">
+      <div class="cap-stat reveal">
+        <div class="num" data-target="100" data-suffix="%">0</div>
+        <div class="label">In-house Manufactured</div>
+        <p>Coil design, power electronics, mechanical platform &amp; controls — engineered together.</p>
+      </div>
+      <div class="cap-stat reveal">
+        <div class="num" data-target="24" data-suffix="/7">0</div>
+        <div class="label">Lifecycle Support</div>
+        <p>Installation, commissioning, training, AMC and on-call assistance.</p>
+      </div>
+      <div class="cap-stat reveal">
+        <div class="num" data-target="11" data-suffix="+">0</div>
+        <div class="label">Product Lines</div>
+        <p>Induction, laser, electroplating &amp; ancillary cooling/filtration systems.</p>
+      </div>
+      <div class="cap-stat reveal">
+        <div class="num" data-target="35" data-suffix=" km">0</div>
+        <div class="label">From IGI Airport, Delhi</div>
+        <p>Faridabad facility within easy reach of NCR &amp; northern industrial belt.</p>
+      </div>
+    </div>
+
+    <div class="cap-pillars">
+      <div class="pillar reveal">
+        <span class="pillar-num">01</span>
+        <h4>Custom Engineered</h4>
+        <p>Each platform is sized to the workpiece, duty cycle and process window.</p>
+      </div>
+      <div class="pillar reveal">
+        <span class="pillar-num">02</span>
+        <h4>Process Automation</h4>
+        <p>PLC/HMI control with recipe management and traceability hooks.</p>
+      </div>
+      <div class="pillar reveal">
+        <span class="pillar-num">03</span>
+        <h4>Power Electronics</h4>
+        <p>Solid-state IGBT inverters tuned for stability &amp; thermal headroom.</p>
+      </div>
+      <div class="pillar reveal">
+        <span class="pillar-num">04</span>
+        <h4>Service Network</h4>
+        <p>Spares, retrofits and process consulting from a single OEM partner.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== Live Simulation Console ========== -->
+  <section id="simulation" class="simulation">
+    <div class="section-head">
+      <p class="kicker">/04 — Live Console</p>
+      <h2>Watch the process<br/><span class="gradient-text">come alive.</span></h2>
+      <p class="lead">A real-time visualization of typical induction parameters. Drag the sliders to feel how power, frequency and temperature interact.</p>
+    </div>
+
+    <div class="console">
+      <div class="console-screen">
+        <div class="console-header">
+          <span class="led led-r"></span>
+          <span class="led led-y"></span>
+          <span class="led led-g"></span>
+          <span class="console-title">AB-INDUCTION • PROCESS MONITOR</span>
+          <span class="console-status" id="conStatus">RUNNING</span>
+        </div>
+
+        <div class="dials">
+          <div class="dial">
+            <svg viewBox="0 0 120 120">
+              <circle cx="60" cy="60" r="50" stroke="#1c2230" stroke-width="10" fill="none"/>
+              <circle id="ringFreq" cx="60" cy="60" r="50" stroke="#ff7a18" stroke-width="10" fill="none"
+                stroke-dasharray="314" stroke-dashoffset="100" stroke-linecap="round" transform="rotate(-90 60 60)"/>
+            </svg>
+            <div class="dial-val"><strong id="vFreq">25</strong><em>kHz</em></div>
+            <span class="dial-label">Frequency</span>
+          </div>
+          <div class="dial">
+            <svg viewBox="0 0 120 120">
+              <circle cx="60" cy="60" r="50" stroke="#1c2230" stroke-width="10" fill="none"/>
+              <circle id="ringTemp" cx="60" cy="60" r="50" stroke="#ff5a3d" stroke-width="10" fill="none"
+                stroke-dasharray="314" stroke-dashoffset="120" stroke-linecap="round" transform="rotate(-90 60 60)"/>
+            </svg>
+            <div class="dial-val"><strong id="vTemp">820</strong><em>°C</em></div>
+            <span class="dial-label">Temperature</span>
+          </div>
+          <div class="dial">
+            <svg viewBox="0 0 120 120">
+              <circle cx="60" cy="60" r="50" stroke="#1c2230" stroke-width="10" fill="none"/>
+              <circle id="ringPow" cx="60" cy="60" r="50" stroke="#ffb84d" stroke-width="10" fill="none"
+                stroke-dasharray="314" stroke-dashoffset="80" stroke-linecap="round" transform="rotate(-90 60 60)"/>
+            </svg>
+            <div class="dial-val"><strong id="vPow">75</strong><em>kW</em></div>
+            <span class="dial-label">Power</span>
+          </div>
+        </div>
+
+        <div class="waveform">
+          <svg viewBox="0 0 600 120" preserveAspectRatio="none">
+            <path id="wavePath" d="M0 60" stroke="#ff7a18" stroke-width="2" fill="none"/>
+            <path id="wavePath2" d="M0 60" stroke="#ffb84d" stroke-width="1.5" fill="none" opacity=".6"/>
+          </svg>
+        </div>
+
+        <div class="readouts">
+          <div><span>Coil Current</span><strong id="vCur">312 A</strong></div>
+          <div><span>Cooling Flow</span><strong id="vFlow">42 L/min</strong></div>
+          <div><span>Cycle</span><strong id="vCycle">#0042</strong></div>
+          <div><span>Status</span><strong>NOMINAL</strong></div>
         </div>
       </div>
-      <div class="floating-card reveal">
-        <img src="https://www.abelectricals.com/images/product-1.jpg" alt="Industrial machine"/>
+
+      <div class="console-controls">
+        <label>
+          <span>Frequency <em id="lFreq">25 kHz</em></span>
+          <input type="range" id="sFreq" min="5" max="200" value="25"/>
+        </label>
+        <label>
+          <span>Power <em id="lPow">75 kW</em></span>
+          <input type="range" id="sPow" min="5" max="500" value="75"/>
+        </label>
+        <label>
+          <span>Setpoint <em id="lTemp">820 °C</em></span>
+          <input type="range" id="sTemp" min="200" max="1300" value="820"/>
+        </label>
+        <p class="console-note">Visualization for demonstration purposes — values illustrate typical operating ranges of induction systems.</p>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <section class="split reveal">
-      <div>
-        <h2>Where engineering meets elegance</h2>
-        <p>The new AB digital identity blends cinematic transitions, refined typography, and tactile interactions to make industrial technology feel premium, accessible, and future-ready.</p>
+  <!-- ========== Global Presence (Map) ========== -->
+  <section id="presence" class="presence">
+    <div class="section-head">
+      <p class="kicker">/05 — Presence</p>
+      <h2>Engineered in India.<br/><span class="gradient-text">Deployed across industries.</span></h2>
+    </div>
+
+    <div class="presence-wrap">
+      <div class="map-card reveal">
+        <svg class="india-map" viewBox="0 0 600 700" aria-label="Map of India">
+          <!-- Highly stylized India outline -->
+          <defs>
+            <linearGradient id="land" x1="0" x2="0" y1="0" y2="1">
+              <stop offset="0%" stop-color="#1a2235"/>
+              <stop offset="100%" stop-color="#0c1220"/>
+            </linearGradient>
+            <radialGradient id="pulseGrad">
+              <stop offset="0%" stop-color="#ff7a18" stop-opacity="1"/>
+              <stop offset="100%" stop-color="#ff7a18" stop-opacity="0"/>
+            </radialGradient>
+          </defs>
+          <path fill="url(#land)" stroke="#2a3550" stroke-width="1.5" d="M210 60 L260 50 L300 70 L350 60 L400 90 L430 130 L470 150 L490 200 L470 240 L430 270 L420 320 L450 360 L470 410 L450 460 L420 510 L380 560 L340 600 L300 640 L260 620 L240 580 L220 540 L200 510 L180 470 L150 430 L130 380 L120 330 L130 280 L150 230 L160 180 L180 130 Z"/>
+          <!-- Faridabad pin (approximate position in northern India) -->
+          <g class="pin" transform="translate(290 200)">
+            <circle r="22" fill="url(#pulseGrad)" class="pulse"/>
+            <circle r="8" fill="#ff7a18"/>
+            <circle r="3" fill="#fff8e6"/>
+          </g>
+          <text x="320" y="200" fill="#ffd791" font-family="Inter" font-size="14" font-weight="600">Faridabad — HQ</text>
+          <text x="320" y="220" fill="#a4adc5" font-family="Inter" font-size="11">Bhakri Industrial Area</text>
+        </svg>
+
+        <div class="map-info">
+          <h3>Headquartered in Faridabad</h3>
+          <p>Bhakri Industrial Area · Approx. 35 km from IGI Airport, Delhi.</p>
+          <ul class="hq-list">
+            <li><span>·</span> Manufacturing &amp; assembly</li>
+            <li><span>·</span> Engineering &amp; controls</li>
+            <li><span>·</span> Service &amp; spares</li>
+          </ul>
+        </div>
       </div>
-      <img src="https://www.abelectricals.com/images/vertical-scanner.jpg" alt="Vertical scanner" />
-    </section>
+    </div>
+  </section>
 
-    <section class="cards">
-      <article class="feature-card reveal">
-        <img src="https://www.abelectricals.com/images/electroplating-rectifier.jpg" alt="Electroplating rectifier" />
-        <h3>Electroplating Rectifiers</h3>
-        <p>Stable output, high efficiency, and industrial reliability for demanding finishing lines.</p>
-      </article>
-      <article class="feature-card reveal">
-        <img src="https://www.abelectricals.com/images/billet-heater.jpg" alt="Billet heater" />
-        <h3>Billet Heating</h3>
-        <p>Rapid heating cycles and optimized thermal profiles for high-throughput operations.</p>
-      </article>
-      <article class="feature-card reveal">
-        <img src="https://abinduction.in/wp-content/uploads/2024/09/induction-hardening-machine.jpg" alt="Induction hardening machine" />
-        <h3>Hardening Systems</h3>
-        <p>Automated PLC/CNC-compatible platforms for repeatable metallurgical performance.</p>
-      </article>
-    </section>
-  </main>
+  <!-- ========== Contact ========== -->
+  <section id="contact" class="contact">
+    <div class="section-head">
+      <p class="kicker">/06 — Contact</p>
+      <h2>Let's engineer your<br/><span class="gradient-text">next thermal line.</span></h2>
+    </div>
 
-  <footer>
-    <p>© 2026 AB Enterprises • Crafted as a premium multi-page web experience.</p>
+    <div class="contact-wrap">
+      <div class="contact-info reveal">
+        <div class="info-block">
+          <span class="info-label">Phone</span>
+          <a class="info-value" href="tel:+919891964848">+91 98919 64848</a>
+        </div>
+        <div class="info-block">
+          <span class="info-label">Address</span>
+          <p class="info-value">Bhakri Industrial Area,<br/>Faridabad, India</p>
+        </div>
+        <div class="info-block">
+          <span class="info-label">Region</span>
+          <p class="info-value">~ 35 km from IGI Airport, Delhi</p>
+        </div>
+        <div class="info-block">
+          <span class="info-label">Brand</span>
+          <p class="info-value">AB Induction · Advanced Induction Heating Machine Technology</p>
+        </div>
+
+        <div class="map-embed">
+          <iframe
+            title="Faridabad location"
+            src="https://www.google.com/maps?q=Bhakri+Industrial+Area+Faridabad&output=embed"
+            loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+      </div>
+
+      <form class="contact-form reveal" id="contactForm" novalidate>
+        <h3>Tell us about your process</h3>
+        <p>Workpiece, throughput, current heat-treatment method — we'll respond with a recommendation.</p>
+
+        <label>
+          <span>Name</span>
+          <input type="text" name="name" required placeholder="Your full name"/>
+        </label>
+        <label>
+          <span>Company</span>
+          <input type="text" name="company" placeholder="Company / plant"/>
+        </label>
+        <label>
+          <span>Email</span>
+          <input type="email" name="email" required placeholder="you@company.com"/>
+        </label>
+        <label>
+          <span>Phone</span>
+          <input type="tel" name="phone" placeholder="+91 ..."/>
+        </label>
+        <label class="full">
+          <span>Application</span>
+          <textarea name="message" rows="4" placeholder="Workpiece, material, current process, throughput..."></textarea>
+        </label>
+        <button type="submit" class="btn btn-primary">
+          Send Enquiry
+          <svg viewBox="0 0 24 24" width="18" height="18"><path d="M5 12h14M13 5l7 7-7 7" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <p class="form-status" id="formStatus" aria-live="polite"></p>
+      </form>
+    </div>
+  </section>
+
+  <!-- ========== Footer ========== -->
+  <footer class="site-footer">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 40 40" width="32" height="32">
+            <circle cx="20" cy="20" r="18" fill="none" stroke="#ff7a18" stroke-width="2"/>
+            <path d="M11 26 L20 9 L29 26 M14.5 20 H25.5" stroke="#ffb84d" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </span>
+        <h4>AB Induction</h4>
+        <p>Advanced Induction Heating Machine Technology.<br/>Faridabad, India.</p>
+      </div>
+      <div class="footer-cols">
+        <div>
+          <h5>Explore</h5>
+          <a href="#industries">Industries</a>
+          <a href="#products">Products</a>
+          <a href="#capabilities">Capabilities</a>
+        </div>
+        <div>
+          <h5>Connect</h5>
+          <a href="tel:+919891964848">+91 98919 64848</a>
+          <a href="#contact">Contact form</a>
+          <a href="#presence">Visit us</a>
+        </div>
+        <div>
+          <h5>Brand</h5>
+          <a href="#hero">AB Induction</a>
+          <a href="#simulation">Live Console</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-base">
+      <p>© <span id="year"></span> AB Induction. All rights reserved.</p>
+      <p>Designed as a premium digital experience.</p>
+    </div>
+    <div class="watermark" aria-hidden="true">AB</div>
   </footer>
+
+  <!-- ========== Product Modal ========== -->
+  <div class="modal" id="modal" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="modal-backdrop" data-close></div>
+    <div class="modal-card">
+      <button class="modal-close" data-close aria-label="Close">×</button>
+      <div class="modal-visual" id="modalVisual"></div>
+      <div class="modal-body">
+        <p class="kicker" id="modalKicker">Product</p>
+        <h3 id="modalTitle">Product</h3>
+        <p id="modalDesc">Description</p>
+        <ul id="modalList" class="modal-list"></ul>
+        <a class="btn btn-primary" href="#contact" data-close>Request a Quote</a>
+      </div>
+    </div>
+  </div>
 
   <script src="script.js"></script>
 </body>
