@@ -1,28 +1,35 @@
-# AB Enterprises Premium Website (Multi-Page)
+# AB Enterprises — AB Induction website
 
-This repo now contains a brand-new modern multi-page website inspired by Apple/Tesla style aesthetics, with smooth scroll reveals, animated page transitions, and interactive visuals.
+Manufacturer-cut redesign for **A.B. Enterprises / AB Induction** — a Faridabad-based manufacturer of induction heating, hardening and IGBT rectifiers since 2004.
 
-## Super easy preview (no GitHub knowledge needed)
+Implementation follows the v2 "manufacturer cut" handoff design (`AB Induction Redesign v2.html`): dark, dense, utilitarian, contact-first hierarchy, technical typography. Real photography sourced from `abinduction.in`.
 
-### Option 1: Double-click
-Open `index.html` directly in your browser.
+## Pages
 
-### Option 2: Local server (recommended)
-Run:
+- `index.html` — single-page main site (hero, products, applications, case study, industries, workshop, process, contact)
+- `products.html` — full product catalogue with spec sheet and options matrix
+- `about.html` — workshop, capability, after-sales
+- `contact.html` — enquiry form, address, directions
+
+Shared:
+- `styles.css` — full stylesheet
+- `script.js` — nav scroll state, mobile menu, live readout, product table interaction, form handler, scroll reveals
+
+## Preview
+
+Just open `index.html` in a browser, or run a local server:
 
 ```bash
 python3 -m http.server 8080
 ```
 
-Then open: `http://localhost:8080`
+Then open `http://localhost:8080`.
 
-## Pages
-- `index.html` (home)
-- `products.html`
-- `about.html`
-- `contact.html`
+## Image sources
 
-## Note on source media
-Images are sourced from your domains:
-- `abinduction.in`
-- `abelectricals.com`
+All product, workshop and process photography is loaded from `abinduction.in/wp-content/uploads/...` — same images used on the live AB Induction site. Two product shots come from the company's listing on `2.wlimg.com` (TradeIndia).
+
+## Type & accent
+
+- **Type** — Inter Tight (UI) + JetBrains Mono (specs, eyebrow, code)
+- **Accent** — amber `#ff8a24` for energy / heat cues; mostly off-state in the dark UI
