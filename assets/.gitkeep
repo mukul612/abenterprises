@@ -1,0 +1,14 @@
+# Reserved for locally-hosted brand assets.
+#
+# Currently the site uses Unsplash hot-links for background photography
+# (see the .env-* rules in styles.css). To self-host:
+#
+#   1. Place high-res images here, e.g.:
+#        assets/hero.jpg
+#        assets/corridor.jpg
+#        assets/assembly.jpg
+#        assets/lab.jpg
+#        assets/control.jpg
+#        assets/network.jpg
+#        assets/command.jpg
+#   2. Swap the URL strings in styles.css (.env-* rules) to "./assets/<name>.jpg".
