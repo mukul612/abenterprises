@@ -304,6 +304,100 @@
   }
 
   /* --------------------------------------------------------------
+     07B · FACTORY PANORAMA — pan one big plant horizontally as
+     the user scrolls vertically. Scene N → Room N visible.
+  -------------------------------------------------------------- */
+  const factoryWorld = $('#factoryWorld');
+  const rooms = $$('.factory-room');
+  const roomTag = $('#roomTag');
+  const roomTagBar = $('#roomTagBar');
+
+  if (factoryWorld && rooms.length) {
+    // Anchor each scene to its room. The panorama starts with room 01
+    // visible at the hero, and finishes with room N at the contact.
+    const sectionNodes = $$('.scene');
+    const totalRooms = rooms.length;
+    const totalRange = totalRooms - 1; // we move 6 viewports to show 7
+
+    // Reveal the room tag once mounted
+    if (roomTag) setTimeout(() => roomTag.classList.add('ready'), 1400);
+
+    const panToScroll = () => {
+      // Build a function ScrollTrigger can re-evaluate on resize
+      return (window.innerWidth) * totalRange;
+    };
+
+    if (window.gsap && window.ScrollTrigger && !prefersReducedMotion) {
+      // The panorama tween is anchored to whole-page scroll. Linear
+      // mapping so each section sits roughly in front of its room.
+      const panTween = gsap.to(factoryWorld, {
+        x: () => -panToScroll(),
+        ease: 'none',
+        scrollTrigger: {
+          trigger: document.documentElement,
+          start: 'top top',
+          end: 'bottom bottom',
+          scrub: 0.6,
+          invalidateOnRefresh: true
+        }
+      });
+
+      // Per-room subtle drift (mirrors panTween direction so it feels
+      // like a real walking dolly, not a flat slide)
+      rooms.forEach((room, i) => {
+        const img = room.querySelector('.factory-room-img');
+        if (!img) return;
+        gsap.fromTo(img,
+          { x: '-2%', y: '0%' },
+          {
+            x: '2%', y: '-1%',
+            ease: 'none',
+            scrollTrigger: {
+              trigger: document.documentElement,
+              start: 'top top',
+              end: 'bottom bottom',
+              scrub: 1
+            }
+          }
+        );
+      });
+
+      // Per-section, snap the active room indicator
+      sectionNodes.forEach((scene, idx) => {
+        // Scene index aligns 1:1 with room index
+        ScrollTrigger.create({
+          trigger: scene,
+          start: 'top 60%',
+          end: 'bottom 40%',
+          onToggle: (self) => {
+            if (!self.isActive) return;
+            updateActiveRoom(idx);
+          }
+        });
+      });
+
+      // Recompute on resize
+      window.addEventListener('resize', () => {
+        ScrollTrigger.refresh();
+      });
+    } else {
+      // Reduced motion / no GSAP: pin to room 1 and let users scroll
+      // through the content stacked vertically.
+      factoryWorld.style.transform = 'translate3d(0,0,0)';
+    }
+
+    // Helper: update the bottom-left "you are in" badge
+    const updateActiveRoom = (idx) => {
+      const room = rooms[idx];
+      if (!room || !roomTag) return;
+      roomTag.querySelector('.room-tag-num').textContent = room.dataset.room || String(idx + 1).padStart(2, '0');
+      roomTag.querySelector('.room-tag-label').textContent = (room.dataset.name || '').toUpperCase();
+      if (roomTagBar) roomTagBar.style.width = ((idx + 1) / totalRooms * 100) + '%';
+    };
+    updateActiveRoom(0);
+  }
+
+  /* --------------------------------------------------------------
      08 · PARALLAX DEPTH LAYERS  (per-scene)
   -------------------------------------------------------------- */
   if (window.gsap && !prefersReducedMotion) {

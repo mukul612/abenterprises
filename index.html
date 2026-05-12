@@ -15,6 +15,60 @@
 <body>
 
   <!-- ========================================================
+       FACTORY PANORAMA  ·  Single horizontal world
+       The entire plant is one continuous environment that pans
+       LEFT→RIGHT as the user scrolls. Every section sits in
+       front of a different room.
+  ========================================================= -->
+  <div class="factory-world" id="factoryWorld" aria-hidden="true">
+    <!-- Room 01 · Ignition / Furnace floor -->
+    <div class="factory-room" data-room="01" data-name="Ignition">
+      <div class="factory-room-img" style="background-image:url('https://images.unsplash.com/photo-1565793979206-2d4e6c40d5e7?auto=format&fit=crop&w=2400&q=80');"></div>
+      <div class="factory-room-tint" style="--tint:#ff5a3d;"></div>
+    </div>
+    <!-- Room 02 · Production corridor -->
+    <div class="factory-room" data-room="02" data-name="Corridor">
+      <div class="factory-room-img" style="background-image:url('https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=2400&q=80');"></div>
+      <div class="factory-room-tint" style="--tint:#ff7a18;"></div>
+    </div>
+    <!-- Room 03 · Assembly floor -->
+    <div class="factory-room" data-room="03" data-name="Assembly">
+      <div class="factory-room-img" style="background-image:url('https://images.unsplash.com/photo-1565043666747-69f6646db940?auto=format&fit=crop&w=2400&q=80');"></div>
+      <div class="factory-room-tint" style="--tint:#ffb84d;"></div>
+    </div>
+    <!-- Room 04 · R&D lab -->
+    <div class="factory-room" data-room="04" data-name="R&amp;D Lab">
+      <div class="factory-room-img" style="background-image:url('https://images.unsplash.com/photo-1518623489648-a173ef7824f3?auto=format&fit=crop&w=2400&q=80');"></div>
+      <div class="factory-room-tint" style="--tint:#5da8ff;"></div>
+    </div>
+    <!-- Room 05 · Control room -->
+    <div class="factory-room" data-room="05" data-name="Control Room">
+      <div class="factory-room-img" style="background-image:url('https://images.unsplash.com/photo-1531297484001-80022131f5a1?auto=format&fit=crop&w=2400&q=80');"></div>
+      <div class="factory-room-tint" style="--tint:#5da8ff;"></div>
+    </div>
+    <!-- Room 06 · Operations / aerial -->
+    <div class="factory-room" data-room="06" data-name="Operations">
+      <div class="factory-room-img" style="background-image:url('https://images.unsplash.com/photo-1542013936693-884638332954?auto=format&fit=crop&w=2400&q=80');"></div>
+      <div class="factory-room-tint" style="--tint:#ff7a18;"></div>
+    </div>
+    <!-- Room 07 · Command center -->
+    <div class="factory-room" data-room="07" data-name="Command">
+      <div class="factory-room-img" style="background-image:url('https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?auto=format&fit=crop&w=2400&q=80');"></div>
+      <div class="factory-room-tint" style="--tint:#ff5a3d;"></div>
+    </div>
+  </div>
+
+  <!-- Universal dim/grade applied over the panorama -->
+  <div class="factory-scrim" aria-hidden="true"></div>
+
+  <!-- Floating "you are in" room label -->
+  <div class="room-tag" id="roomTag" aria-hidden="true">
+    <span class="room-tag-num">01</span>
+    <span class="room-tag-label">IGNITION</span>
+    <span class="room-tag-bar"><i id="roomTagBar"></i></span>
+  </div>
+
+  <!-- ========================================================
        PRELOADER  ·  Furnace ignition sequence
   ========================================================= -->
   <div class="preloader" id="preloader" aria-hidden="true">
@@ -145,11 +199,9 @@
   ========================================================= -->
   <section id="hero" class="scene scene-hero" data-scene-name="Ignition Chamber" data-scene-index="01">
 
-    <!-- Parallax depth layers (back → front) -->
+    <!-- Parallax depth layers (mid silhouette + foreground machine).
+         The back layer is provided by the global factory panorama. -->
     <div class="scene-layers" aria-hidden="true">
-      <div class="layer layer-back" data-depth="0.15">
-        <div class="env env-ignition"></div>
-      </div>
       <div class="layer layer-mid" data-depth="0.35">
         <div class="silhouette silhouette-pillars"></div>
       </div>
@@ -292,9 +344,6 @@
   <section id="industries" class="scene scene-industries" data-scene-name="Production Corridor" data-scene-index="02">
 
     <div class="scene-layers" aria-hidden="true">
-      <div class="layer layer-back" data-depth="0.15">
-        <div class="env env-corridor"></div>
-      </div>
       <div class="layer layer-mid" data-depth="0.4">
         <div class="silhouette silhouette-corridor"></div>
       </div>
@@ -412,9 +461,6 @@
   <section id="products" class="scene scene-products" data-scene-name="Assembly Floor" data-scene-index="03">
 
     <div class="scene-layers" aria-hidden="true">
-      <div class="layer layer-back" data-depth="0.1">
-        <div class="env env-assembly"></div>
-      </div>
       <div class="layer layer-mid" data-depth="0.3">
         <div class="silhouette silhouette-machines"></div>
       </div>
@@ -670,9 +716,6 @@
   <section id="capabilities" class="scene scene-capabilities" data-scene-name="R&D Lab" data-scene-index="04">
 
     <div class="scene-layers" aria-hidden="true">
-      <div class="layer layer-back" data-depth="0.12">
-        <div class="env env-lab"></div>
-      </div>
       <div class="layer layer-mid" data-depth="0.3">
         <div class="silhouette silhouette-grid"></div>
       </div>
@@ -763,9 +806,6 @@
   <section id="simulation" class="scene scene-simulation" data-scene-name="Control Room" data-scene-index="05">
 
     <div class="scene-layers" aria-hidden="true">
-      <div class="layer layer-back" data-depth="0.1">
-        <div class="env env-control"></div>
-      </div>
       <div class="layer layer-mid" data-depth="0.25">
         <div class="silhouette silhouette-monitors"></div>
       </div>
@@ -880,9 +920,6 @@
   <section id="presence" class="scene scene-presence" data-scene-name="Operations Network" data-scene-index="06">
 
     <div class="scene-layers" aria-hidden="true">
-      <div class="layer layer-back" data-depth="0.1">
-        <div class="env env-network"></div>
-      </div>
       <div class="layer layer-mid" data-depth="0.3">
         <div class="silhouette silhouette-globe"></div>
       </div>
@@ -988,9 +1025,6 @@
   <section id="contact" class="scene scene-contact" data-scene-name="Command Center" data-scene-index="07">
 
     <div class="scene-layers" aria-hidden="true">
-      <div class="layer layer-back" data-depth="0.12">
-        <div class="env env-command"></div>
-      </div>
       <div class="layer layer-mid" data-depth="0.3">
         <div class="silhouette silhouette-command"></div>
       </div>
