@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Step In — Free Trial &amp; Contact | Bloom MMA &amp; Fitness</title>
+  <meta name="description" content="Book your free first class at Bloom MMA & Fitness, Allen Park MI. Call or text (313) 989-9222, email bloommma313@gmail.com, or send your fight info online.">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body data-round="4">
+
+  <a class="skip" href="#main">Skip to content</a>
+
+  <div class="round-loader" aria-hidden="true">
+    <span class="r-label">Bloom MMA &amp; Fitness — Step In</span>
+    <span class="r-num display">Round <em>4</em></span>
+    <span class="r-fight">Fight!</span>
+  </div>
+  <div class="wipe" aria-hidden="true"></div>
+
+  <div class="ticker" aria-hidden="true">
+    <div class="tape">
+      <span>Bloom MMA &amp; Fitness</span><b>//</b><span>Allen Park, Michigan</span><b>//</b><span>Est. 2022</span><b>//</b><span>(313) 989-9222</span><b>//</b><span>First class free</span><b>//</b><span>All levels welcome</span><b>//</b><span>Iron sharpens iron</span><b>//</b>
+      <span>Bloom MMA &amp; Fitness</span><b>//</b><span>Allen Park, Michigan</span><b>//</b><span>Est. 2022</span><b>//</b><span>(313) 989-9222</span><b>//</b><span>First class free</span><b>//</b><span>All levels welcome</span><b>//</b><span>Iron sharpens iron</span><b>//</b>
+    </div>
+  </div>
+
+  <header class="nav">
+    <a class="brand" href="index.html" aria-label="Bloom MMA home">
+      <svg viewBox="0 0 64 64" aria-hidden="true">
+        <polygon points="44.8 2 19.2 2 2 19.2 2 44.8 19.2 62 44.8 62 62 44.8 62 19.2" fill="none" stroke="#e80c2c" stroke-width="4"/>
+        <text x="32" y="44" text-anchor="middle" font-family="Anton, Arial Black, sans-serif" font-size="30" fill="#f2f0ea">B</text>
+      </svg>
+      <span class="word">Bloom <b>MMA</b><small>Fitness — 313</small></span>
+    </a>
+    <nav class="nav-links" id="nav-links">
+      <a href="index.html">Main Event</a>
+      <a href="classes.html">Fight Card</a>
+      <a href="coach.html">The Coach</a>
+      <a href="contact.html" class="active">Step In</a>
+    </nav>
+    <a class="btn btn-blood js-bell" href="#weigh-in">Free Trial</a>
+    <button class="burger" aria-label="Open menu" aria-expanded="false" aria-controls="nav-links">
+      <span></span><span></span><span></span>
+    </button>
+  </header>
+
+  <main id="main">
+
+    <section class="page-hero">
+      <div class="container">
+        <p class="crumbs rv hit"><a href="index.html">Main Event</a> <i>//</i> Step In</p>
+        <h1 class="display rv hit" style="--d:.1s">Make the <em>walk</em></h1>
+        <p class="sub rv hit" style="--d:.2s">
+          Every fighter remembers their first walk to the cage. Yours starts with a message —
+          your first class is free, gloves included, ego optional.
+        </p>
+      </div>
+    </section>
+
+    <!-- ============ WEIGH-IN FORM + CORNER INFO ============ -->
+    <section class="section caged" id="weigh-in">
+      <div class="container">
+        <div class="section-head rv impact">
+          <span class="kicker"><span class="corner-red"></span> Official weigh-ins</span>
+          <h2 class="display">Sign your <em>bout agreement</em></h2>
+          <p class="lede">Fill out your fighter info and we'll get you on the card. Prefer to talk? Call or text — a human answers, not a machine.</p>
+        </div>
+
+        <div class="contact-grid">
+          <form class="fight-form rv-l" novalidate>
+            <div class="field">
+              <label for="f-name"><i>01.</i> Fighter name</label>
+              <input id="f-name" name="name" type="text" placeholder="Your full name" required>
+            </div>
+            <div class="row">
+              <div class="field">
+                <label for="f-phone"><i>02.</i> Phone</label>
+                <input id="f-phone" name="phone" type="tel" placeholder="(313) 555-0000">
+              </div>
+              <div class="field">
+                <label for="f-email"><i>03.</i> Email</label>
+                <input id="f-email" name="email" type="email" placeholder="you@email.com" required>
+              </div>
+            </div>
+            <div class="row">
+              <div class="field">
+                <label for="f-program"><i>04.</i> Pick your division</label>
+                <select id="f-program" name="program">
+                  <option>MMA</option>
+                  <option>Brazilian Jiu-Jitsu</option>
+                  <option>Muay Thai / Kickboxing</option>
+                  <option>Boxing</option>
+                  <option>Wrestling</option>
+                  <option>Kids MMA (6–12)</option>
+                  <option>Strength &amp; Conditioning</option>
+                  <option>Not sure — corner me!</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="f-level"><i>05.</i> Experience</label>
+                <select id="f-level" name="level">
+                  <option>First-timer (0–0)</option>
+                  <option>A few rounds in</option>
+                  <option>Trained before</option>
+                  <option>Amateur competitor</option>
+                  <option>Pro / aspiring pro</option>
+                </select>
+              </div>
+            </div>
+            <div class="field">
+              <label for="f-message"><i>06.</i> Your game plan</label>
+              <textarea id="f-message" name="message" placeholder="Goals, questions, injuries we should know about — anything for your corner."></textarea>
+            </div>
+            <div>
+              <button class="btn btn-blood" type="submit">Step In The Cage</button>
+              <p class="form-note" style="margin-top:.9rem">Submitting opens your email app with everything pre-filled — or skip the paperwork and text <b style="color:var(--gold)">(313) 989-9222</b>.</p>
+              <p class="form-note form-sent" hidden style="color:var(--gold)">Bout agreement drafted — check your email app and hit send. See you on the mats.</p>
+            </div>
+          </form>
+
+          <div class="info-stack rv-r">
+            <div class="info-card">
+              <div class="ic" aria-hidden="true">313</div>
+              <div>
+                <h4>Call / text the corner</h4>
+                <p><a href="tel:+13139899222">(313) 989-9222</a></p>
+              </div>
+            </div>
+            <div class="info-card">
+              <div class="ic" aria-hidden="true">@</div>
+              <div>
+                <h4>Email</h4>
+                <p><a href="mailto:bloommma313@gmail.com">bloommma313@gmail.com</a></p>
+              </div>
+            </div>
+            <div class="info-card">
+              <div class="ic" aria-hidden="true">HQ</div>
+              <div>
+                <h4>The home cage</h4>
+                <p>5903 Allen Rd<br>Allen Park, MI 48101</p>
+              </div>
+            </div>
+            <div class="info-card">
+              <div class="ic" aria-hidden="true">IG</div>
+              <div>
+                <h4>Fight footage &amp; updates</h4>
+                <p><a href="https://www.instagram.com/bloommma313" target="_blank" rel="noopener">@bloommma313</a> · <a href="https://www.facebook.com/p/Bloom-MMA-Fitness-100085902660510/" target="_blank" rel="noopener">Facebook</a></p>
+              </div>
+            </div>
+            <div class="info-card">
+              <div class="ic" aria-hidden="true">1st</div>
+              <div>
+                <h4>First class</h4>
+                <p>Free. Loaner gloves available — just bring water and show up 15 minutes early for your walkout.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="map-shell rv">
+          <span class="map-tag">Fight Location — Allen Park, MI</span>
+          <iframe
+            title="Map to Bloom MMA & Fitness, Allen Park, MI"
+            src="https://www.google.com/maps?q=Bloom%20MMA%20%26%20Fitness%2C%20Allen%20Park%2C%20MI&output=embed"
+            loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+          <div class="map-link">
+            <span>5903 Allen Rd, Allen Park, MI 48101</span>
+            <a href="https://www.google.com/maps/search/?api=1&amp;query=Bloom%20MMA%20%26%20Fitness%2C%20Allen%20Park%2C%20MI" target="_blank" rel="noopener">Get directions →</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ QUOTE ============ -->
+    <section class="section alt quote-band caged">
+      <div class="container rv impact">
+        <blockquote>"The cage doesn't care where you started. <em>Neither do we.</em>"</blockquote>
+        <cite>— Bloom MMA &amp; Fitness</cite>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <div class="foot-grid">
+        <div class="foot-brand">
+          <span class="word">Bloom <b>MMA</b></span>
+          <p>The 313's home of mixed martial arts. Founded 2022 in Allen Park, Michigan — where iron sharpens iron.</p>
+        </div>
+        <div>
+          <h4>Fight Camp</h4>
+          <ul>
+            <li><a href="index.html">Main Event</a></li>
+            <li><a href="classes.html">Fight Card</a></li>
+            <li><a href="coach.html">The Coach</a></li>
+            <li><a href="contact.html">Step In</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Divisions</h4>
+          <ul>
+            <li><a href="classes.html">MMA</a></li>
+            <li><a href="classes.html">Brazilian Jiu-Jitsu</a></li>
+            <li><a href="classes.html">Muay Thai &amp; Boxing</a></li>
+            <li><a href="classes.html">Wrestling &amp; Kids</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>The Corner</h4>
+          <ul>
+            <li>5903 Allen Rd, Allen Park, MI 48101</li>
+            <li><a href="tel:+13139899222">(313) 989-9222</a></li>
+            <li><a href="mailto:bloommma313@gmail.com">bloommma313@gmail.com</a></li>
+            <li><a href="https://www.instagram.com/bloommma313" target="_blank" rel="noopener">Instagram</a> · <a href="https://www.facebook.com/p/Bloom-MMA-Fitness-100085902660510/" target="_blank" rel="noopener">Facebook</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="foot-bottom">
+        <span>© <span data-year>2026</span> Bloom MMA &amp; Fitness <i>//</i> Allen Park, MI</span>
+        <span>Iron sharpens iron <i>//</i> Est. 2022</span>
+      </div>
+    </div>
+    <span class="foot-ghost" aria-hidden="true">313</span>
+  </footer>
+
+  <div class="round-clock" aria-hidden="true">
+    <span class="rc-rd">R4</span>
+    <span class="rc-time">5:00</span>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
