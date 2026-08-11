@@ -1,0 +1,213 @@
+/* ============================================================================
+   AB Induction — design tokens
+   Single source of truth. Implements 01-DESIGN-SYSTEM.md §2 colour, §3 type,
+   §4 layout/space/surface, §5 motion.
+
+   This is a Tailwind 4 `@theme` block, which does two jobs at once: it emits
+   every token below as a `:root` custom property AND generates the matching
+   utilities. So `--color-copper-500` is usable as `var(--color-copper-500)` in
+   hand-written CSS and as `bg-copper-500` / `text-copper-500` in markup, from
+   one declaration with no aliasing and no drift.
+
+   Naming note: token names carry Tailwind's namespace prefix (`--color-*`,
+   `--font-*`, `--text-*`, `--ease-*`, `--container-*`) because that prefix is
+   what generates the utilities. Values and roles map 1:1 to the design system:
+   design system `--steel-900`  ->  `--color-steel-900`
+                 `--copper-500` ->  `--color-copper-500`
+   Tokens with no Tailwind namespace (the scales, durations, borders) keep the
+   design system's exact names.
+   ========================================================================= */
+
+@theme {
+  /* ── Ground: cold-rolled steel ───────────────────────────────────────── */
+  --color-steel-950: #080d11; /* deepest, hero and footer  */
+  --color-steel-900: #0e161b; /* primary dark surface      */
+  --color-steel-800: #16212a; /* raised dark surface, cards */
+  --color-steel-700: #22303b; /* borders on dark           */
+  --color-steel-600: #33454f;
+  --color-steel-500: #4e626d; /* muted text on dark        */
+  --color-steel-400: #7a8d98;
+  --color-steel-300: #a6b5be; /* secondary text on dark    */
+  --color-steel-200: #c9d3d9;
+  --color-steel-100: #e2e8eb; /* primary text on dark      */
+
+  /* ── Light surfaces: zinc, not cream ─────────────────────────────────── */
+  --color-zinc-50: #eef1f3; /* light section ground */
+  --color-zinc-25: #f7f9fa;
+  --color-paper: #ffffff;
+  --color-rule: #d3dbdf; /* hairline on light */
+
+  /* ── Brand constant: inductor copper ─────────────────────────────────── */
+  --color-copper-700: #8f4a1e; /* links on LIGHT grounds (see contrast note) */
+  --color-copper-600: #a85c28; /* hover                                      */
+  --color-copper-500: #c1712f; /* PRIMARY — logo, buttons, links on dark     */
+  --color-copper-400: #d18c4e;
+  --color-copper-300: #e3ac7a; /* focus ring */
+  --color-copper-100: #f5e2d0;
+
+  /* ── Division accents ────────────────────────────────────────────────────
+     Never button colours. They mark *where you are*: mega-menu column rule,
+     category eyebrow, machine-card left border, division hero scale. §2. */
+  --color-cherry-500: #dc4b18; /* Induction — incandescence      */
+  --color-cherry-700: #9c3210;
+  --color-nickel-500: #2a8cb8; /* Rectifiers — electroplating DC */
+  --color-nickel-700: #1b5e7d;
+  --color-beam-500: #6366d8; /* Laser — fibre beam violet      */
+  --color-beam-700: #43459b;
+
+  /* ── The Heat Scale (real steel incandescence) ───────────────────────────
+     These are instrument-only colours. They must never be used as UI colours;
+     that restraint is what keeps the instrument meaningful. §2. */
+  --color-heat-550: #5e1508; /* faint red    */
+  --color-heat-700: #a32410; /* dark cherry  */
+  --color-heat-800: #d24218; /* cherry       */
+  --color-heat-900: #f2761c; /* orange       */
+  --color-heat-1000: #fba62a; /* light orange */
+  --color-heat-1100: #fdd456; /* yellow       */
+  --color-heat-1250: #fff4ce; /* white        */
+
+  /* ── Semantic ────────────────────────────────────────────────────────── */
+  --color-ok: #3e9e6c;
+  --color-warn: #d19b1b;
+  --color-error: #b32d1e; /* light grounds only — 2.88:1 on steel-900 */
+  --color-error-300: #e05b49; /* [a11y] error text on dark, 5.01:1     */
+
+  /* ── Accessibility corrections ───────────────────────────────────────────
+     Six pairings the design system specifies do not clear the floors the design
+     system itself sets in §2. Remedies stay inside the existing palette; run
+     `npm run audit:contrast` to re-verify. Each is flagged [a11y] at its use.
+
+       captions        steel-500 on steel-900   2.86  -> steel-400      5.30
+       card links      copper-500 on steel-800  4.41  -> copper-400     5.89
+       button hover    steel-950 on copper-600  3.93  -> copper-400     7.04
+       2ary border     steel-500 on steel-900   2.86  -> steel-400      5.30
+       error text      error on steel-900       2.88  -> error-300      5.01
+       focus ring      copper-300 on zinc-50    1.77  -> copper-700     5.85
+
+     The focus ring is the serious one: SC 1.4.11 makes 3:1 mandatory for focus
+     indicators, and copper-300 on a light section is effectively invisible. It
+     is therefore ground-dependent rather than a single value. */
+  --focus-ring: var(--color-copper-300); /* on dark  */
+  --focus-ring-light: var(--color-copper-700); /* on light */
+  --focus-width: 2px;
+  --focus-offset: 2px;
+
+  /* ── The three instrument scales ─────────────────────────────────────────
+     Stop percentages are reproduced verbatim from the design system. They are
+     evenly spaced per stop, NOT linear in the measured unit — so every tick and
+     marker position is derived from these same stops by src/lib/scales.ts
+     rather than by linear interpolation. That keeps the colour under a marker
+     honest to the value the marker claims. */
+  --heat-scale: linear-gradient(
+    90deg,
+    var(--color-heat-550) 0%,
+    var(--color-heat-700) 16%,
+    var(--color-heat-800) 33%,
+    var(--color-heat-900) 50%,
+    var(--color-heat-1000) 67%,
+    var(--color-heat-1100) 84%,
+    var(--color-heat-1250) 100%
+  );
+
+  --current-scale: linear-gradient(
+    90deg,
+    #0f3d52 0%,
+    #1b5e7d 30%,
+    #2a8cb8 60%,
+    #62bde0 85%,
+    #c7eaf6 100%
+  );
+
+  --power-scale: linear-gradient(
+    90deg,
+    #2a2b62 0%,
+    #43459b 35%,
+    #6366d8 65%,
+    #9fa1ec 85%,
+    #e4e5fb 100%
+  );
+
+  /* ── Typography §3 ───────────────────────────────────────────────────────
+     Three roles, two families. Archivo is instanced to wght 600-700 x wdth
+     100-112 — exactly the three display settings below. See scripts/sync-fonts.mjs */
+  --font-display: 'Archivo', system-ui, sans-serif;
+  --font-body: 'IBM Plex Sans', system-ui, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
+
+  /* Type scale. `--text-*` generates `text-hero`, `text-h1`, ... with their
+     line-height, weight and tracking attached. Width axis is applied by the
+     `.t-*` classes in base.css, which font-variation-settings requires. */
+  --text-hero: clamp(2.75rem, 6vw, 5rem);
+  --text-hero--line-height: 0.98;
+  --text-hero--font-weight: 700;
+  --text-hero--letter-spacing: -0.02em;
+
+  --text-h1: clamp(2.125rem, 4vw, 3.25rem);
+  --text-h1--line-height: 1.06;
+  --text-h1--font-weight: 700;
+
+  --text-h2: clamp(1.625rem, 2.6vw, 2.25rem);
+  --text-h2--line-height: 1.15;
+  --text-h2--font-weight: 600;
+
+  --text-h3: 1.3125rem;
+  --text-h3--line-height: 1.3;
+  --text-h3--font-weight: 600;
+
+  --text-body-lg: 1.1875rem;
+  --text-body-lg--line-height: 1.65;
+
+  --text-body: 1.0625rem;
+  --text-body--line-height: 1.7;
+
+  --text-small: 0.9375rem;
+  --text-small--line-height: 1.6;
+
+  --text-data: 0.9375rem;
+  --text-data--line-height: 1.45;
+
+  --text-eyebrow: 0.75rem;
+  --text-eyebrow--line-height: 1.2;
+  --text-eyebrow--font-weight: 500;
+  --text-eyebrow--letter-spacing: 0.14em;
+
+  /* Display width-axis settings, §3 */
+  --wdth-hero: 112;
+  --wdth-h1: 108;
+  --wdth-h2: 100;
+
+  /* Measure: 68-74 characters on body text. Never full-width paragraphs. §3 */
+  --measure: 70ch;
+
+  /* ── Layout, space, surface §4 ───────────────────────────────────────────
+     `--spacing: 4px` drives Tailwind's whole numeric scale, so p-1=4px,
+     p-2=8px, p-6=24px, p-12=48px, p-32=128px — the design system's ramp. */
+  --spacing: 4px;
+
+  --container-page: 1280px; /* --container   */
+  --container-bleed: 1440px; /* --container-w */
+  --gutter: clamp(20px, 4vw, 40px);
+  --grid-gutter: 24px; /* 12-col grid */
+
+  --radius-sm: 2px;
+  --radius-md: 4px; /* cards, buttons */
+  --radius-lg: 6px; /* modals only    */
+  /* tables: 0. Machines aren't round. */
+
+  --border-dark: 1px solid var(--color-steel-700);
+  --border-light: 1px solid var(--color-rule);
+
+  /* The only shadow in the system: sticky header once scrolled. §4 */
+  --shadow-header: 0 1px 0 var(--color-steel-700), 0 8px 24px rgb(0 0 0 / 0.35);
+
+  /* Engineering-drawing grid. Barely visible — a texture, not a pattern. §4 */
+  --grid-major: rgb(230 238 242 / 0.035);
+  --grid-minor: rgb(230 238 242 / 0.018);
+
+  /* ── Motion §5 ───────────────────────────────────────────────────────── */
+  --ease-brand: cubic-bezier(0.2, 0, 0, 1);
+  --ease-out-brand: cubic-bezier(0.16, 1, 0.3, 1);
+  --dur-fast: 140ms;
+  --dur: 220ms;
+  --dur-slow: 420ms;
+}

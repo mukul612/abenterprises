@@ -1,0 +1,394 @@
+---
+/**
+ * The Heat Scale — 01-DESIGN-SYSTEM.md §1, §6.
+ *
+ * "A horizontal strip reproducing the real incandescence colours of steel...
+ * It appears in four places and each use is informational, not decorative."
+ *
+ * Four modes:
+ *   rule        full-width edge-to-edge rule beneath the hero. Fills 0->100 %
+ *               over 900 ms on first paint, once, never loops. §5
+ *   progress    scroll-progress indicator. The strip fills as you read — you
+ *               are literally heating the page. §1
+ *   instrument  labelled, framed, with tick labels and a band marker showing
+ *               the operating window of this machine or process. §6
+ *   divider     section divider on dark grounds, 2 px at 30 % opacity. §1
+ *
+ * Three variants, "same instrument, three physics": heat (induction), current
+ * (rectifiers, 300 A-10 kA), power (laser, 1-3 kW).
+ *
+ * JS: none. The scroll-progress fill uses a CSS scroll-driven animation. Where
+ * `animation-timeline` is unsupported the bar is hidden rather than left frozen
+ * at zero, so it never shows a false reading — see the @supports block.
+ */
+import { SCALES, valueToPercent, formatBand, formatValue } from '@lib/scales';
+import type { ScaleKind, Band } from '@lib/scales';
+
+interface Props {
+  variant?: ScaleKind;
+  mode?: 'rule' | 'progress' | 'instrument' | 'divider';
+  /** Operating window to mark, e.g. [850, 950] for induction hardening */
+  band?: Band;
+  /** Single value to mark instead of a band, e.g. a 2000 A rectifier */
+  value?: number;
+  /** Overrides the auto-generated marker label */
+  bandLabel?: string;
+  /** Caption above the instrument, e.g. "Operating window" */
+  label?: string;
+  showTicks?: boolean;
+  class?: string;
+  id?: string;
+}
+
+const {
+  variant = 'heat',
+  mode = 'rule',
+  band,
+  value,
+  bandLabel,
+  label,
+  showTicks = true,
+  class: className = '',
+  id,
+} = Astro.props;
+
+const scale = SCALES[variant];
+
+/* Tick positions come from the same mapping the marker uses, so a tick and a
+   marker at the same value always land on the same pixel. */
+const ticks = scale.ticks.map((t, i) => ({
+  value: t,
+  percent: valueToPercent(variant, t).percent,
+  // First and last ticks anchor to the bar edges so labels can't overflow
+  align: i === 0 ? 'start' : i === scale.ticks.length - 1 ? 'end' : 'middle',
+}));
+
+/* Band or single value -> marker geometry */
+let marker: {
+  start: number;
+  end: number;
+  text: string;
+  outOfRange: 'below' | 'above' | null;
+} | null = null;
+
+if (band) {
+  const lo = valueToPercent(variant, band[0]);
+  const hi = valueToPercent(variant, band[1]);
+  marker = {
+    start: lo.percent,
+    end: hi.percent,
+    text: bandLabel ?? formatBand(variant, band),
+    // Only flag when the window genuinely leaves the scale at its low end —
+    // a band straddling the minimum still reads honestly from its upper half
+    outOfRange: lo.outOfRange === 'below' && hi.outOfRange === 'below' ? 'below' : null,
+  };
+} else if (value !== undefined) {
+  const v = valueToPercent(variant, value);
+  marker = {
+    start: v.percent,
+    end: v.percent,
+    text: bandLabel ?? formatValue(variant, value),
+    outOfRange: v.outOfRange,
+  };
+}
+
+/* A band that falls entirely below the scale cannot be read off this
+   instrument. Say so rather than pinning a marker to the edge. §1 defines the
+   scale as 550-1250 °C because that is where steel is visibly incandescent. */
+const belowScale = marker?.outOfRange === 'below';
+
+const describedBy = id ? `${id}-desc` : undefined;
+const accessibleName = marker
+  ? `${scale.label}. Operating window ${marker.text}${belowScale ? ', below the range of this scale' : ''}.`
+  : scale.label;
+---
+
+{
+  mode === 'instrument' ? (
+    <figure
+      class:list={['heat-scale-figure', className]}
+      id={id}
+      data-variant={variant}
+    >
+      {label && (
+        <figcaption class="heat-scale-figure__label t-eyebrow">{label}</figcaption>
+      )}
+
+      <div
+        class="heat-scale heat-scale--instrument"
+        role="img"
+        aria-label={accessibleName}
+      >
+        <div class="heat-scale__track">
+          <div class="heat-scale__fill" />
+
+          {marker && !belowScale && (
+            <div
+              class:list={['heat-scale__band', { 'is-point': marker.start === marker.end }]}
+              style={`--band-start:${marker.start}%;--band-end:${marker.end}%`}
+              aria-hidden="true"
+            />
+          )}
+        </div>
+
+        {showTicks && (
+          <ul class="heat-scale__ticks" aria-hidden="true">
+            {ticks.map((t) => (
+              <li
+                class="heat-scale__tick"
+                data-align={t.align}
+                style={`--tick:${t.percent}%`}
+              >
+                <span class="heat-scale__tick-mark" />
+                <span class="heat-scale__tick-label t-data">
+                  {t.value >= 10000 ? t.value.toLocaleString('en-GB') : t.value}
+                </span>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+
+      {marker && (
+        <p class="heat-scale-figure__readout t-eyebrow" id={describedBy}>
+          {belowScale ? (
+            <>
+              <span class="heat-scale-figure__flag">Below scale</span>
+              <span class="heat-scale-figure__value">{marker.text}</span>
+            </>
+          ) : (
+            <span class="heat-scale-figure__value">{marker.text}</span>
+          )}
+        </p>
+      )}
+    </figure>
+  ) : (
+    <div
+      class:list={[`heat-scale heat-scale--${mode}`, className]}
+      id={id}
+      data-variant={variant}
+      role={mode === 'progress' ? 'presentation' : undefined}
+      aria-hidden="true"
+    >
+      <div class="heat-scale__track">
+        <div class="heat-scale__fill" />
+      </div>
+    </div>
+  )
+}
+
+<style>
+  /* ── Shared ─────────────────────────────────────────────────────────────── */
+  .heat-scale {
+    --scale-image: var(--heat-scale);
+    width: 100%;
+  }
+  .heat-scale[data-variant='current'] {
+    --scale-image: var(--current-scale);
+  }
+  .heat-scale[data-variant='power'] {
+    --scale-image: var(--power-scale);
+  }
+
+  .heat-scale__track {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .heat-scale__fill {
+    width: 100%;
+    height: 100%;
+    background-image: var(--scale-image);
+  }
+
+  /* ── Mode: rule — full-bleed under the hero §1.1 ──────────────────────────
+     Fills 0->100 % over 900 ms with a slight ease-out, once, on first paint.
+     "It reads as the part coming up to temperature. Do not loop it." §5
+
+     The gradient stays at full width and a clip reveals it, so at 40 % you see
+     the left 40 % of the real scale rather than the whole scale squashed. */
+  .heat-scale--rule .heat-scale__track {
+    height: 4px;
+  }
+  .heat-scale--rule .heat-scale__fill {
+    clip-path: inset(0 0 0 0);
+    animation: heat-fill 900ms var(--ease-out-brand) 1 both;
+  }
+
+  @keyframes heat-fill {
+    from {
+      clip-path: inset(0 100% 0 0);
+    }
+    to {
+      clip-path: inset(0 0 0 0);
+    }
+  }
+
+  /* ── Mode: progress — scroll indicator §1.2 ───────────────────────────────
+     Zero JS: a CSS scroll-driven animation tied to the document scroll. */
+  .heat-scale--progress {
+    position: fixed;
+    inset-block-start: 0;
+    inset-inline: 0;
+    z-index: 60;
+    pointer-events: none;
+  }
+  .heat-scale--progress .heat-scale__track {
+    height: 3px;
+  }
+  .heat-scale--progress .heat-scale__fill {
+    clip-path: inset(0 100% 0 0);
+  }
+
+  @supports (animation-timeline: scroll()) {
+    .heat-scale--progress .heat-scale__fill {
+      animation: heat-fill linear both;
+      animation-timeline: scroll(root block);
+    }
+  }
+
+  /* Without scroll-driven animation support the bar would sit permanently at
+     zero, which reads as "you have read none of this page" — a false reading on
+     an instrument. Hide it instead. */
+  @supports not (animation-timeline: scroll()) {
+    .heat-scale--progress {
+      display: none;
+    }
+  }
+
+  /* §5: "Under reduced motion the heat scale renders at full width immediately
+     and the scroll-progress fill is disabled." */
+  @media (prefers-reduced-motion: reduce) {
+    .heat-scale--rule .heat-scale__fill {
+      animation: none;
+      clip-path: inset(0 0 0 0);
+    }
+    .heat-scale--progress {
+      display: none;
+    }
+  }
+
+  /* ── Mode: divider — dark grounds, 2 px, 30 % opacity §1.4 ─────────────── */
+  .heat-scale--divider .heat-scale__track {
+    height: 2px;
+  }
+  .heat-scale--divider .heat-scale__fill {
+    opacity: 0.3;
+  }
+
+  /* ── Mode: instrument §6 ──────────────────────────────────────────────────
+     "8 px tall bar with the gradient, 1 px --steel-700 frame, mono tick labels
+     beneath, and a 2 px vertical marker with a mono label showing the band." */
+  .heat-scale-figure {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .heat-scale-figure__label {
+    color: var(--color-steel-400);
+  }
+
+  .heat-scale--instrument .heat-scale__track {
+    height: 8px;
+    border: 1px solid var(--color-steel-700);
+    border-radius: var(--radius-sm);
+    overflow: visible;
+  }
+  .heat-scale--instrument .heat-scale__fill {
+    border-radius: 1px;
+  }
+
+  /* The operating window. A range renders as a lit span between two 2 px
+     markers; a single value renders as one marker. */
+  .heat-scale__band {
+    position: absolute;
+    inset-block: -5px;
+    inset-inline-start: var(--band-start);
+    inline-size: max(2px, calc(var(--band-end) - var(--band-start)));
+    border-inline: 2px solid var(--color-steel-100);
+    background: rgb(255 255 255 / 0.14);
+    box-shadow: 0 0 0 1px rgb(8 13 17 / 0.55);
+    pointer-events: none;
+  }
+  .heat-scale__band.is-point {
+    background: var(--color-steel-100);
+    border-inline: 0;
+  }
+
+  /* Tick labels beneath, mono, tabular §6 */
+  .heat-scale__ticks {
+    position: relative;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    block-size: 1.9em;
+    margin-block-start: 6px;
+  }
+  .heat-scale__tick {
+    position: absolute;
+    inset-block-start: 0;
+    inset-inline-start: var(--tick);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    translate: -50% 0;
+  }
+  .heat-scale__tick[data-align='start'] {
+    translate: 0 0;
+    align-items: flex-start;
+  }
+  .heat-scale__tick[data-align='end'] {
+    translate: -100% 0;
+    align-items: flex-end;
+  }
+  .heat-scale__tick-mark {
+    inline-size: 1px;
+    block-size: 4px;
+    background: var(--color-steel-600);
+  }
+  .heat-scale__tick-label {
+    color: var(--color-steel-300);
+    font-size: 0.75rem;
+    white-space: nowrap;
+  }
+  /* The readout — the number a buyer actually takes away */
+  .heat-scale-figure__readout {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    margin: 0;
+    color: var(--color-steel-100);
+  }
+  .heat-scale-figure__value {
+    color: var(--color-steel-100);
+  }
+  .heat-scale-figure__flag {
+    color: var(--color-warn);
+    border: 1px solid currentColor;
+    border-radius: var(--radius-sm);
+    padding: 1px 6px;
+  }
+
+  /* Light grounds: the frame and labels need the darker steels */
+  :global(.ground-light) .heat-scale--instrument .heat-scale__track,
+  :global(.ground-paper) .heat-scale--instrument .heat-scale__track {
+    border-color: var(--color-rule);
+  }
+  :global(.ground-light) .heat-scale__tick-label,
+  :global(.ground-paper) .heat-scale__tick-label {
+    color: var(--color-steel-600);
+  }
+  :global(.ground-light) .heat-scale-figure__value,
+  :global(.ground-paper) .heat-scale-figure__value {
+    color: var(--color-steel-900);
+  }
+  :global(.ground-light) .heat-scale__band,
+  :global(.ground-paper) .heat-scale__band {
+    border-color: var(--color-steel-900);
+    background: rgb(14 22 27 / 0.12);
+    box-shadow: 0 0 0 1px rgb(255 255 255 / 0.5);
+  }
+</style>

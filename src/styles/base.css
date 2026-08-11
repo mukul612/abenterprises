@@ -1,0 +1,345 @@
+/* ============================================================================
+   Base layer — element defaults, font faces, focus, motion.
+   Tokens live in tokens.css; nothing here invents a value.
+   ========================================================================= */
+
+/* ── Self-hosted faces, Latin subset, WOFF2 §7.4 ─────────────────────────────
+   Archivo is instanced to wght 600-700 x wdth 100-112 by scripts/sync-fonts.mjs
+   — exactly the three display settings §3 uses. 88 kB -> 34.6 kB. It is the only
+   preloaded face (see BaseHead.astro), per §7.4 "preload the display face only". */
+@font-face {
+  font-family: 'Archivo';
+  font-style: normal;
+  font-weight: 600 700;
+  font-stretch: 100% 112%;
+  font-display: swap;
+  src: url('/fonts/archivo-latin-var.woff2') format('woff2-variations');
+}
+
+@font-face {
+  font-family: 'IBM Plex Sans';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/ibm-plex-sans-latin-400-normal.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'IBM Plex Sans';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('/fonts/ibm-plex-sans-latin-500-normal.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'IBM Plex Sans';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('/fonts/ibm-plex-sans-latin-600-normal.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'IBM Plex Sans';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('/fonts/ibm-plex-sans-latin-700-normal.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/ibm-plex-mono-latin-400-normal.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('/fonts/ibm-plex-mono-latin-500-normal.woff2') format('woff2');
+}
+
+@layer base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-behavior: smooth;
+    /* Anchor targets clear the sticky header */
+    scroll-padding-top: 7rem;
+  }
+
+  body {
+    margin: 0;
+    background: var(--color-steel-900);
+    color: var(--color-steel-100);
+    font-family: var(--font-body);
+    font-size: var(--text-body);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* §7.4 explicit dimensions on every image; never ship a shifting layout */
+  img,
+  picture,
+  video,
+  canvas,
+  svg {
+    display: block;
+    max-width: 100%;
+  }
+  img,
+  video {
+    height: auto;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  p,
+  figure,
+  blockquote {
+    margin: 0;
+  }
+
+  /* Sentence case throughout, §7. Uppercase only in mono eyebrow labels. */
+  h1,
+  h2 {
+    font-family: var(--font-display);
+    font-weight: 700;
+  }
+  h3,
+  h4 {
+    font-family: var(--font-body);
+    font-weight: 600;
+  }
+
+  ul,
+  ol {
+    margin: 0;
+    padding: 0;
+  }
+
+  a {
+    color: inherit;
+  }
+
+  button,
+  input,
+  select,
+  textarea {
+    font: inherit;
+    color: inherit;
+  }
+
+  /* Mono carries every number on the site, §3. Tabular figures so columns of
+     kW / kHz / A / °C line up when a buyer compares three machines. */
+  code,
+  kbd,
+  samp,
+  pre {
+    font-family: var(--font-mono);
+    font-feature-settings: 'tnum' 1;
+  }
+
+  table {
+    border-collapse: collapse;
+    border-spacing: 0;
+    /* tables: 0 radius. Machines aren't round. §4 */
+    border-radius: 0;
+  }
+
+  /* ── Focus §6 ──────────────────────────────────────────────────────────────
+     2 px copper outline, 2 px offset. Ground-dependent because copper-300 is
+     1.77:1 on zinc-50 and SC 1.4.11 makes 3:1 mandatory for focus indicators;
+     see the [a11y] block in tokens.css. */
+  :focus-visible {
+    outline: var(--focus-width) solid var(--focus-ring);
+    outline-offset: var(--focus-offset);
+    border-radius: var(--radius-sm);
+  }
+  :focus:not(:focus-visible) {
+    outline: none;
+  }
+
+  /* Light grounds swap the ring to the darker copper */
+  .ground-light,
+  .ground-paper {
+    --focus-ring: var(--focus-ring-light);
+  }
+
+  ::selection {
+    background: var(--color-copper-500);
+    color: var(--color-steel-950);
+  }
+}
+
+@layer components {
+  /* ── Display type §3 ─────────────────────────────────────────────────────
+     font-variation-settings cannot live in the `--text-*` theme namespace, so
+     the width axis is applied here. Sizes/weights/tracking come from tokens. */
+  .t-hero {
+    font-family: var(--font-display);
+    font-size: var(--text-hero);
+    line-height: var(--text-hero--line-height);
+    font-weight: var(--text-hero--font-weight);
+    letter-spacing: var(--text-hero--letter-spacing);
+    font-variation-settings: 'wdth' var(--wdth-hero);
+  }
+  .t-h1 {
+    font-family: var(--font-display);
+    font-size: var(--text-h1);
+    line-height: var(--text-h1--line-height);
+    font-weight: var(--text-h1--font-weight);
+    font-variation-settings: 'wdth' var(--wdth-h1);
+  }
+  .t-h2 {
+    font-family: var(--font-display);
+    font-size: var(--text-h2);
+    line-height: var(--text-h2--line-height);
+    font-weight: var(--text-h2--font-weight);
+    font-variation-settings: 'wdth' var(--wdth-h2);
+  }
+  .t-h3 {
+    font-family: var(--font-body);
+    font-size: var(--text-h3);
+    line-height: var(--text-h3--line-height);
+    font-weight: 600;
+  }
+  .t-body-lg {
+    font-size: var(--text-body-lg);
+    line-height: var(--text-body-lg--line-height);
+  }
+  .t-body {
+    font-size: var(--text-body);
+    line-height: var(--text-body--line-height);
+  }
+  .t-small {
+    font-size: var(--text-small);
+    line-height: var(--text-small--line-height);
+  }
+  /* Every number on the site, §3 */
+  .t-data {
+    font-family: var(--font-mono);
+    font-size: var(--text-data);
+    line-height: var(--text-data--line-height);
+    font-weight: 400;
+    font-feature-settings: 'tnum' 1;
+  }
+  /* Eyebrows carry real information — model code, division, temperature band,
+     current rating. Never decorative kickers. §3 */
+  .t-eyebrow {
+    font-family: var(--font-mono);
+    font-size: var(--text-eyebrow);
+    line-height: var(--text-eyebrow--line-height);
+    font-weight: var(--text-eyebrow--font-weight);
+    letter-spacing: var(--text-eyebrow--letter-spacing);
+    text-transform: uppercase;
+    font-feature-settings: 'tnum' 1;
+  }
+
+  /* Measure: 68-74 characters. Never full-width paragraphs. §3 */
+  .measure {
+    max-width: var(--measure);
+  }
+
+  /* ── Containers §4 ─────────────────────────────────────────────────────── */
+  .container {
+    width: 100%;
+    max-width: var(--container-page);
+    margin-inline: auto;
+    padding-inline: var(--gutter);
+  }
+  .container-bleed {
+    width: 100%;
+    max-width: var(--container-bleed);
+    margin-inline: auto;
+    padding-inline: var(--gutter);
+  }
+
+  /* ── Grounds §2 ──────────────────────────────────────────────────────────
+     Dark steel is the default. Light zinc is for long-form reading only. */
+  .ground-deep {
+    background: var(--color-steel-950);
+    color: var(--color-steel-100);
+  }
+  .ground-dark {
+    background: var(--color-steel-900);
+    color: var(--color-steel-100);
+  }
+  .ground-raised {
+    background: var(--color-steel-800);
+    color: var(--color-steel-100);
+  }
+  .ground-light {
+    background: var(--color-zinc-50);
+    color: var(--color-steel-900);
+  }
+  .ground-paper {
+    background: var(--color-paper);
+    color: var(--color-steel-900);
+  }
+
+  /* Engineering-drawing grid, §4. 1 px at 64 px major, 8 px minor. Barely
+     visible — a texture, not a pattern. */
+  .grid-texture {
+    position: relative;
+    isolation: isolate;
+  }
+  .grid-texture::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background-image:
+      linear-gradient(to right, var(--grid-major) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--grid-major) 1px, transparent 1px),
+      linear-gradient(to right, var(--grid-minor) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--grid-minor) 1px, transparent 1px);
+    background-size:
+      64px 64px,
+      64px 64px,
+      8px 8px,
+      8px 8px;
+  }
+
+  /* Skip link — keyboard navigable end to end, §10 */
+  .skip-link {
+    position: absolute;
+    left: 50%;
+    translate: -50% -150%;
+    z-index: 100;
+    padding: 12px 20px;
+    background: var(--color-copper-500);
+    color: var(--color-steel-950);
+    font-weight: 600;
+    border-radius: 0 0 var(--radius-md) var(--radius-md);
+    transition: translate var(--dur) var(--ease-brand);
+  }
+  .skip-link:focus {
+    translate: -50% 0;
+  }
+}
+
+/* ── Reduced motion §5 ─────────────────────────────────────────────────────
+   Verbatim from the design system. Under reduced motion the heat scale renders
+   at full width immediately and the scroll-progress fill is disabled — both are
+   handled in HeatScale.astro. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
