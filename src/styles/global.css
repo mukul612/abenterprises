@@ -1,0 +1,5 @@
+/* Single entry point. Order matters: Tailwind first so its layers exist, then
+   our tokens (which extend Tailwind's theme), then the base layer. */
+@import 'tailwindcss';
+@import './tokens.css';
+@import './base.css';
